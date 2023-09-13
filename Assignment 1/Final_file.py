@@ -57,11 +57,13 @@ with open('coords.txt', 'r') as fFile:
         SINGLE_LINE = line.strip().split(' ')
         coords_array.append(SINGLE_LINE)
 
+pointer_dict = [{}]
 for point in coords_array:
     x, y = float(point[0]), float(point[1])
     pointer_ref_array.append([pointer,(int(x),int(y))])
+    pointer_dict.append({'x': x , 'y': y})
     if int(pointer) == int(starting_vertex):
-        plt.scatter(x, y, marker='x', color='blue')
+        plt.scatter(x, y, marker='x', color='red')
         plt.annotate(f'{pointer}', (x, y), textcoords="offset points", xytext=(0, 5), ha='right',size=7)
         pointer += 1 
         continue
@@ -111,8 +113,7 @@ for each_connection in connection_array:
     #     print(f'{sourceX},{sourceY} --> {destX},{destY}');
     plt.plot([sourceX,destX],[sourceY,destY],c='lightgray', zorder=0)
 
-# Display the plot
-plt.show()
+
 
 
 class Graph:
@@ -185,11 +186,34 @@ if __name__ == "__main__":
     path, distances_between = graph.shortest_path_with_distances(start_vertex, end_vertex, parents)
     
     #print(f'Shortest distance from {start_vertex} to {end_vertex} is {distances[end_vertex]}')
-    print(f'{" ".join(map(str, path))}')
+    #print(*path)
     #print('Distances between nodes on the path:')
-    
-    #dist_array = []
+    intermediate_distances = 0
+    dist_array = []
     for node, distance in distances_between.items():
         #print(f'Distance from {path[path.index(node) - 1]} to {node} is {distance}')
-        #dist_array.append(distance)
-        print(distance,end=' ')
+        intermediate_distances = distance + intermediate_distances
+        #intermediate_distances = "{0:.4f}".format(intermediate_distances)
+        dist_array.append(intermediate_distances)
+        #print(distance,end=' ')
+
+#print(*path)
+#print(*dist_array)
+
+# FINAL PLOT
+for index,src in enumerate(path[:-1]):
+    src = pointer_dict[path[index]]
+    dest = pointer_dict[path[index+1]]    
+    plt.plot([src['x'],dest['x']],[src['y'],dest['y']],c='blue', zorder=0)
+    
+# Display the plot
+plt.show()
+
+with open('output1.txt', 'w') as f:
+    for index,p in enumerate(path):
+        f.write(str(path[index]) + ' ')
+    f.write('\n')
+    f.write('0 ')
+    for index,d in enumerate(dist_array):
+        dist_array[index] = "{:.4f}".format(dist_array[index])
+        f.write(str(dist_array[index]) + ' ')
