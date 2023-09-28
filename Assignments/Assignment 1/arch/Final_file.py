@@ -138,20 +138,20 @@ class Graph:
                     parent[v] = u  
                     
                     # Uncomment this to remove all the multiple plots    
-                    # fig = plt.subplot()
-                    # setup_initial_plots()
-                    # plt.scatter([all_x], [all_y], color='lightgray', marker='o')
-                    # plt.plot([pointer_dict[u]['x'],pointer_dict[v]['x']],[pointer_dict[u]['y'],pointer_dict[v]['y']])
-                    # for index,vnum in enumerate(visited_vertices):
-                    #     plt.scatter(pointer_dict[visited_vertices[index]]['x'], pointer_dict[visited_vertices[index]]['y'],  color='gray', marker='x')
-                    # plt.xlabel('X-axis')
-                    # plt.ylabel('Y-axis')
-                    # plt.xlim(-2, 22)
-                    # plt.ylim(-2, 22)
-                    # clear_output(wait=True)
-                    # display(fig)
-                    # plt.legend()
-                    # plt.show()  
+                    fig = plt.subplot()
+                    setup_initial_plots()
+                    plt.scatter([all_x], [all_y], color='lightgray', marker='o')
+                    plt.plot([pointer_dict[u]['x'],pointer_dict[v]['x']],[pointer_dict[u]['y'],pointer_dict[v]['y']])
+                    for index,vnum in enumerate(visited_vertices):
+                        plt.scatter(pointer_dict[visited_vertices[index]]['x'], pointer_dict[visited_vertices[index]]['y'],  color='gray', marker='x')
+                    plt.xlabel('X-axis')
+                    plt.ylabel('Y-axis')
+                    plt.xlim(-2, 22)
+                    plt.ylim(-2, 22)
+                    clear_output(wait=True)
+                    display(fig)
+                    plt.legend()
+                    plt.show()  
                     
         return dist, parent
 
