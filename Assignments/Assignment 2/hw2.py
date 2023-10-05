@@ -112,7 +112,22 @@ def setup_heuristic_dict(source,destination,weight):
         x2,y2 = destination_point['x'],destination_point['y']
         heuristic_distance = (math.sqrt((x2 - x1)**2 + (y2 - y1)**2)) * weight
         heuristic_dict.append(heuristic_distance)
-    
+
+# neighbor_dict = [{}]
+# def get_neighbors():  
+#   for each_point in pointer_dict[1:]:
+#       neighbors = []
+#       if each_point in self.graph:
+#         for v, w in self.graph[each_point]:
+#           neighbors.append(v)
+          
+#       neighbor_dict.append(neighbors)
+
+def heuristic(state, goal):
+    # Example: Euclidean distance
+    x1,y1 = pointer_dict[state]['x'],pointer_dict[state]['y']
+    x2,y2 = pointer_dict[goal]['x'],pointer_dict[goal]['y']
+    return (((x2 - x1)**2 + (y2 - y1)**2)) ** 0.5
 
 class Graph:
     def __init__(self):
@@ -122,6 +137,15 @@ class Graph:
         if u not in self.graph:
             self.graph[u] = []
         self.graph[u].append((v, w))
+    
+    def get_neighbors(self, node):
+        neighbors = []
+    
+        if node in self.graph:
+          for v, w in self.graph[node]:
+            neighbors.append(v)
+    
+        return neighbors
 
     def min_distance(self, dist, visited):
         min_dist = float('inf')
@@ -146,8 +170,8 @@ class Graph:
             
 
             for v, w in self.graph[u]:
-                if not visited[v] and dist[u] + w < dist[v]:
-                    dist[v] = dist[u] + w
+                if not visited[v] and (dist[u] + w) < dist[v]:
+                    dist[v] = (dist[u] + w)
                     parent[v] = u  
                 no_of_iteration +=1
                     
@@ -175,22 +199,39 @@ class Graph:
         parent = {vertex: None for vertex in self.graph}  # Store parent vertices
         no_of_iteration = 0
         dist[start] = 0
+        minfn = float('inf')
 
         for _ in range(len(self.graph)):
             u = self.min_distance(dist, visited)
             visited[u] = True
             visited_vertices.append(u)
-            
+            print(f'Reached New Source Node: {u} ------- Distance Till now: {dist[u]}')
             
             if u == end_vertex:
                 # Early exit if the destination is reached
                 break
 
             for v, w in self.graph[u]:
-                if not visited[v] and dist[u] + w < dist[v]:
-                    dist[v] = dist[u] + w + (heuristic_dict[v] * weight)
+                print(f'   Visiting Dest Node: {v} =    Distance: {w}')
+                print(f'   Distance till this point: {dist[v]}')
+                print(f'   Heutristic Distance to goal from this point: {heuristic_dict[v] * weight}')
+                print(f'   {dist[u] + w} <  {dist[v]}')
+                print(f'   {dist[u] + w + (heuristic_dict[v] * weight)} <  {dist[v]}')
+                if not visited[v] and dist[u] + w + (heuristic_dict[v] * weight)< dist[v] + (heuristic_dict[v] * weight):
+                    dist[v] = dist[u] + w
                     parent[v] = u  
-                no_of_iteration +=1
+                    print(f'      Distance Updated:{dist[v]}')
+                    print(f'      Parent Updated:{parent[v]}')
+                    
+                    fn = dist[v]
+                    gn = dist[u] + w
+                    hn = heuristic_dict[v] * weight
+                    print(f'          {fn} = {gn} + {hn}')
+                    fn = gn + hn
+                    print(f'          FN = {fn}')
+                    if ( fn < minfn ):
+                        minfn = fn
+                        print(f'      Next destination should be {v}')
                     
                     # Uncomment this to remove all the multiple plots    
                     # fig = plt.subplot()
@@ -206,9 +247,150 @@ class Graph:
                     # clear_output(wait=True)
                     # display(fig)
                     # plt.legend()
-                    # plt.show()  
-                
+                    # plt.show()                
+                print('')   
+                no_of_iteration +=1
+            print('----- Onto the NEXT node -----')                    
         return dist, parent, no_of_iteration
+    
+    # def a_star(self,start,weight=1):
+    #     # Second Implemenation to A* since 1st method was giving errors.
+    #     visited = {vertex: False for vertex in self.graph}
+    #     dist = {vertex: float('inf') for vertex in self.graph}
+    #     parent = {vertex: None for vertex in self.graph}
+        
+    #     dist[start] = 0
+    #     queue = [start]
+    #     no_of_iteration = 0
+        
+    #     for node in queue:
+    #         visited[node] = True
+    #         no_of_iteration += 1
+            
+    #         if node == end_vertex:
+    #           # return reconstruct_path(parent, goal)
+    #           break
+    #         visited[node] = True
+            
+    #         neighbors = graph.get_neighbors(node)
+    #         for neighbor in neighbors:
+    #             tent_dist = dist[node] + 1
+    #             if not visited[neighbor] or tent_dist < dist[neighbor]:
+    #                 dist[neighbor] = tent_dist
+    #                 parent[neighbor] = node
+    #                 queue.append(neighbor)
+        
+    #     return dist,parent,no_of_iteration
+    
+    def a_star(self, start, goal, weight=1):
+        # Initialization
+        visited = {vertex: False for vertex in self.graph}
+        dist = {vertex: float('inf') for vertex in self.graph}
+        parent = {vertex: None for vertex in self.graph}
+        dist[start] = 0
+        open_set = [(start, 0)]  # Priority queue to store nodes and their f-values
+        no_of_iteration = 0
+
+        while open_set:
+            current, current_f = min(open_set, key=lambda x: x[1])
+            open_set.remove((current, current_f))
+
+            visited[current] = True
+            no_of_iteration += 1
+
+            if current == goal:
+                # Goal reached, reconstruct the path
+                path = self.reconstruct_path(start, goal, parent)
+                distance = self.calculate_distance(path)
+                return path, distance, no_of_iteration
+
+            for neighbor, edge_weight in self.graph[current]:
+                if visited[neighbor]:
+                    continue
+
+                tentative_g = dist[current] + edge_weight
+                tentative_f = tentative_g + heuristic(neighbor, goal) * weight
+
+                if tentative_f < dist[neighbor]:
+                    # Update the distance and parent
+                    dist[neighbor] = tentative_g
+                    parent[neighbor] = current
+
+                    # Update the priority queue
+                    open_set.append((neighbor, tentative_f))
+
+        return None, None, no_of_iteration
+    
+    def astar1(self, start, goal, weight):
+        visited = {vertex: False for vertex in self.graph}
+        dist = {vertex: float('inf') for vertex in self.graph}
+        parent = {vertex: None for vertex in self.graph}
+        no_of_iteration = 0
+        dist[start] = 0
+
+        for _ in range(len(self.graph)):
+            u = self.min_distance(dist, visited)
+            visited[u] = True
+            visited_vertices.append(u)
+
+            for v, w in self.graph[u]:
+                if not visited[v]:
+                    tentative_g = dist[u] + w
+                    tentative_h = heuristic_dict[v] * weight
+                    tentative_f = tentative_g + tentative_h
+
+                    if tentative_f < dist[v]:
+                        dist[v] = tentative_g
+                        parent[v] = u
+                    no_of_iteration += 1
+
+        return dist, parent, no_of_iteration
+    
+    def a_star2(self, start, goal,weight):
+        visited = {vertex: False for vertex in self.graph}
+        g = {vertex: float('inf') for vertex in self.graph}  # Actual cost from start to vertex
+        f = {vertex: float('inf') for vertex in self.graph}  # g + heuristic cost from vertex to goal
+        parent = {vertex: None for vertex in self.graph}  # Store parent vertices
+        no_of_iteration = 0
+        g[start] = 0
+        f[start] = heuristic_dict[start]
+    
+        for _ in range(len(self.graph)):
+            u = self.min_distance(f, visited)  # Use f instead of g for minimum distance
+            visited[u] = True
+    
+            if u == goal:  # Stop when the goal is reached
+                break
+    
+            for v, w in self.graph[u]:
+                if not visited[v] and (g[u] + w) < g[v]:
+                    g[v] = (g[u] + w)
+                    f[v] = g[v] + (heuristic_dict[v] * weight)  # Update f with new cost and heuristic
+                    parent[v] = u  
+                no_of_iteration +=1                 
+                      
+        return g, parent, no_of_iteration
+    
+    def reconstruct_path(self, start, goal, parent):
+        path = []
+        current = goal
+
+        while current is not None:
+            path.append(current)
+            current = parent[current]
+
+        path.reverse()
+        return path
+    
+    def calculate_distance(self, path):
+        distance = 0
+        for i in range(len(path) - 1):
+            u, v = path[i], path[i + 1]
+            for neighbor, weight in self.graph[u]:
+                if neighbor == v:
+                    distance += weight
+                    break
+        return distance
 
     def shortest_path_with_distances(self, start, end, parent):
         path = []
@@ -312,20 +494,30 @@ def run_particular_algorithm(algo_used,weight=1):
         for node, distance in distances_between.items():
             intermediate_distances = distance + intermediate_distances
             dist_array.append(intermediate_distances)
-        final_plot(path,dist_array,'Dijkstra`s Algorithm   #Iterations:'+str(iterations))
+        final_plot(path,dist_array,'Dijkstra`s Algorithm')
        
     if algo_used=='WA':
-        distances, parents,iterations = graph.weighted_a_star(start_vertex,weight)
+        distances, parents, iterations = graph.a_star2(start_vertex, end_vertex,weight)
         path, distances_between = graph.shortest_path_with_distances(start_vertex, end_vertex, parents)    
         intermediate_distances = 0
         dist_array = []
         for node, distance in distances_between.items():
             intermediate_distances = distance + intermediate_distances
             dist_array.append(intermediate_distances)
-        title = 'Weighted A* | Weights ='+str(weight) + '  #Iterations:'+str(iterations)
-        if weight==1:
-            title = 'A*' + '  #Iterations:='+str(iterations)
-        final_plot(path,dist_array,title)
+        final_plot(path,dist_array,'Weighted A* | Weights ='+ str(weight) + "Count"+str(iterations))
+        # print(f'{distances}, {parents}, {iterations}')
+        # path, distances_between = graph.shortest_path_with_distances(start_vertex, end_vertex, parents)  
+        # print(path)
+        # print(distance)
+        # intermediate_distances = 0
+        # dist_array = []
+        # for node, distance in distances_between.items():
+        #     intermediate_distances = distance + intermediate_distances
+        #     dist_array.append(intermediate_distances)
+        # title = 'Weighted A* | Weights ='+ str(weight)
+        # if weight==1:
+        #     title = 'A*' + str(iterations)
+        # final_plot(path,dist_array,title)
         
 
 if __name__ == "__main__":
@@ -339,14 +531,14 @@ if __name__ == "__main__":
     end_vertex = int(target_vertex)
     
     # Setup Heuristic Distances from every node to the target node
-    setup_heuristic_dict(start_vertex, end_vertex, 1)    
+    setup_heuristic_dict(start_vertex, end_vertex, 1)  
     
     run_particular_algorithm('D')
-    run_particular_algorithm('WA')
-    run_particular_algorithm('WA',2)
-    run_particular_algorithm('WA',3)
-    run_particular_algorithm('WA',4)
-    run_particular_algorithm('WA',5)   
+    # run_particular_algorithm('WA')
+    # run_particular_algorithm('WA',2)
+    # run_particular_algorithm('WA',3)
+    # run_particular_algorithm('WA',4)
+    # run_particular_algorithm('WA',5)   
     
     # distances, parents = graph.dijkstra(start_vertex)    
     # path, distances_between = graph.shortest_path_with_distances(start_vertex, end_vertex, parents)    

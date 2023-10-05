@@ -149,66 +149,104 @@ class Graph:
                 if not visited[v] and dist[u] + w < dist[v]:
                     dist[v] = dist[u] + w
                     parent[v] = u  
-                no_of_iteration +=1
-                    
-                    # Uncomment this to remove all the multiple plots    
-                    # fig = plt.subplot()
-                    # setup_initial_plots()
-                    # plt.scatter([all_x], [all_y], color='lightgray', marker='o')
-                    # plt.plot([pointer_dict[u]['x'],pointer_dict[v]['x']],[pointer_dict[u]['y'],pointer_dict[v]['y']])
-                    # for index,vnum in enumerate(visited_vertices):
-                    #     plt.scatter(pointer_dict[visited_vertices[index]]['x'], pointer_dict[visited_vertices[index]]['y'],  color='gray', marker='x')
-                    # plt.xlabel('X-axis')
-                    # plt.ylabel('Y-axis')
-                    # plt.xlim(-2, 22)
-                    # plt.ylim(-2, 22)
-                    # clear_output(wait=True)
-                    # display(fig)
-                    # plt.legend()
-                    # plt.show()  
-                    
+                
+                # print(f'Iteration Number:{no_of_iteration}')
+                # Uncomment this to remove all the multiple plots    
+                # fig = plt.subplot()
+                # setup_initial_plots()
+                # plt.scatter([all_x], [all_y], color='lightgray', marker='o')
+                # plt.plot([pointer_dict[u]['x'],pointer_dict[v]['x']],[pointer_dict[u]['y'],pointer_dict[v]['y']])
+                # for index,vnum in enumerate(visited_vertices):
+                #     plt.scatter(pointer_dict[visited_vertices[index]]['x'], pointer_dict[visited_vertices[index]]['y'],  color='gray', marker='x')
+                # plt.xlabel('X-axis')
+                # plt.ylabel('Y-axis')
+                # plt.xlim(-2, 22)
+                # plt.ylim(-2, 22)
+                # clear_output(wait=True)
+                # display(fig)
+                # plt.legend()
+                # plt.show()
+                no_of_iteration +=1                    
         return dist, parent, no_of_iteration
         
-    def weighted_a_star(self, start, weight=1):
+    # def weighted_a_star(self, start, weight=1):
+    #     visited = {vertex: False for vertex in self.graph}
+    #     dist = {vertex: float('inf') for vertex in self.graph}
+    #     parent = {vertex: None for vertex in self.graph}  # Store parent vertices
+    #     no_of_iteration = 0
+    #     dist[start] = 0
+
+    #     for _ in range(len(self.graph)):
+    #         u = self.min_distance(dist, visited)
+    #         visited[u] = True
+    #         visited_vertices.append(u)
+    #         if u == end_vertex:
+    #             # Early exit if the destination is reached
+    #             break
+
+    #         for v, w in self.graph[u]:
+    #             if not visited[v] and dist[u] + w < dist[v]:
+    #                 dist[v] = dist[u] + w + (heuristic_dict[v] * weight)
+    #                 parent[v] = u  
+    #             no_of_iteration +=1
+                
+    #             # Uncomment this to remove all the multiple plots    
+    #             fig = plt.subplot()
+    #             setup_initial_plots()
+    #             plt.scatter([all_x], [all_y], color='lightgray', marker='o')
+    #             plt.plot([pointer_dict[u]['x'],pointer_dict[v]['x']],[pointer_dict[u]['y'],pointer_dict[v]['y']])
+    #             for index,vnum in enumerate(visited_vertices):
+    #                 plt.scatter(pointer_dict[visited_vertices[index]]['x'], pointer_dict[visited_vertices[index]]['y'],  color='gray', marker='x')
+    #             plt.xlabel('X-axis')
+    #             plt.ylabel('Y-axis')
+    #             plt.xlim(-2, 22)
+    #             plt.ylim(-2, 22)                
+    #             # clear_output(wait=True)
+    #             display(fig)
+    #             plt.legend()
+    #             plt.show()           
+    #     return dist, parent, no_of_iteration
+
+    def a_star2(self, start, goal, weight):
         visited = {vertex: False for vertex in self.graph}
-        dist = {vertex: float('inf') for vertex in self.graph}
+        g = {vertex: float('inf') for vertex in self.graph}  # Actual cost from start to vertex
+        f = {vertex: float('inf') for vertex in self.graph}  # g + heuristic cost from vertex to goal
         parent = {vertex: None for vertex in self.graph}  # Store parent vertices
         no_of_iteration = 0
-        dist[start] = 0
-
+        g[start] = 0
+        f[start] = heuristic_dict[start]
+    
         for _ in range(len(self.graph)):
-            u = self.min_distance(dist, visited)
+            u = self.min_distance(f, visited)  # Use f instead of g for minimum distance
             visited[u] = True
-            visited_vertices.append(u)
-            
-            
-            if u == end_vertex:
-                # Early exit if the destination is reached
+    
+            if u == goal:  
                 break
-
+    
             for v, w in self.graph[u]:
-                if not visited[v] and dist[u] + w < dist[v]:
-                    dist[v] = dist[u] + w + (heuristic_dict[v] * weight)
+                if not visited[v] and (g[u] + w) < g[v]:
+                    g[v] = (g[u] + w)
+                    f[v] = g[v] + (heuristic_dict[v] * weight) 
                     parent[v] = u  
-                no_of_iteration +=1
-                    
-                    # Uncomment this to remove all the multiple plots    
-                    # fig = plt.subplot()
-                    # setup_initial_plots()
-                    # plt.scatter([all_x], [all_y], color='lightgray', marker='o')
-                    # plt.plot([pointer_dict[u]['x'],pointer_dict[v]['x']],[pointer_dict[u]['y'],pointer_dict[v]['y']])
-                    # for index,vnum in enumerate(visited_vertices):
-                    #     plt.scatter(pointer_dict[visited_vertices[index]]['x'], pointer_dict[visited_vertices[index]]['y'],  color='gray', marker='x')
-                    # plt.xlabel('X-axis')
-                    # plt.ylabel('Y-axis')
-                    # plt.xlim(-2, 22)
-                    # plt.ylim(-2, 22)
-                    # clear_output(wait=True)
-                    # display(fig)
-                    # plt.legend()
-                    # plt.show()  
                 
-        return dist, parent, no_of_iteration
+                # Uncomment this to remove all the multiple plots    
+                # fig = plt.subplot()
+                # setup_initial_plots()
+                # plt.scatter([all_x], [all_y], color='lightgray', marker='o')
+                # plt.plot([pointer_dict[u]['x'],pointer_dict[v]['x']],[pointer_dict[u]['y'],pointer_dict[v]['y']])
+                # for index,vnum in enumerate(visited_vertices):
+                #     plt.scatter(pointer_dict[visited_vertices[index]]['x'], pointer_dict[visited_vertices[index]]['y'],  color='gray', marker='x')
+                # plt.xlabel('X-axis')
+                # plt.ylabel('Y-axis')
+                # plt.xlim(-2, 22)
+                # plt.ylim(-2, 22)
+                # # clear_output(wait=True)
+                # display(fig)
+                # plt.legend()
+                # plt.show()  
+                no_of_iteration +=1                 
+                      
+        return g, parent, no_of_iteration
 
     def shortest_path_with_distances(self, start, end, parent):
         path = []
@@ -315,7 +353,8 @@ def run_particular_algorithm(algo_used,weight=1):
         final_plot(path,dist_array,'Dijkstra`s Algorithm   #Iterations:'+str(iterations))
        
     if algo_used=='WA':
-        distances, parents,iterations = graph.weighted_a_star(start_vertex,weight)
+        # distances, parents,iterations = graph.weighted_a_star(start_vertex,weight)
+        distances, parents,iterations = graph.a_star2(start_vertex, end_vertex, weight)
         path, distances_between = graph.shortest_path_with_distances(start_vertex, end_vertex, parents)    
         intermediate_distances = 0
         dist_array = []
