@@ -122,11 +122,11 @@ This repository contains the implementation of the Rapidly-exploring Random Tree
 
 ### RRT* Tree Example
 
-![RRT* Tree Example](/path/to/rrt_star_tree.png)
+![RRT* Tree Example](/Assignments/Assignment%203/rrt_animation.gif)
 
 ### Final Path Example
 
-![Final Path Example](/path/to/final_path.png)
+![Final Path Example](Assignments/Assignment%203/submissions/Figure%202023-10-23%20193614%20(892).png)
 
 
 ## Files
