@@ -1,6 +1,6 @@
 # AI-and-Data-Engineering
 
-### Dijkstra's Algorithm Documentation
+###c Documentation
 ---
 ### How to Run
 
@@ -94,6 +94,16 @@ A* Algorithm is a heuristic search algorithm that is similar to Dijkstra's Algor
 ### Weighted A* Algorithm
 
 Weighted A* Algorithm is a variant of A* Algorithm that allows the user to adjust the weight of the heuristic function. This can be useful in situations where the heuristic function is not accurate, or when the user wants to prioritize certain paths over others.
+
+## Visualization
+
+### RRT* Tree Example
+
+![ Dijkstra's Algorithm / A* Algorithm / Weighted A* Algorithm ](/Assignments/Assignment%202/dijkstras-Astar-weightedAstar.gif)
+
+### Final Path Example
+
+![Final Path Example](/Assignments/Assignment%202/End.png)
 
 ## Implementation
 
