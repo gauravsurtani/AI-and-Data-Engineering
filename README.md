@@ -1,8 +1,6 @@
 # AI-and-Data-Engineering
 
-## Assignment - 1
 ### Dijkstra's Algorithm Documentation
-
 ---
 ### How to Run
 
@@ -88,3 +86,120 @@ In this example, the code initializes a `Graph` object, adds edges, and then app
 - Some print statements are commented out, which can be used for debugging or to provide additional information during execution.
 
 - The code assumes that certain variables (`visited_vertices`, `connection_array`, etc.) are defined elsewhere in the program. These variables should be provided with appropriate values before running the code.
+
+### A* Algorithm
+
+A* Algorithm is a heuristic search algorithm that is similar to Dijkstra's Algorithm, but uses a heuristic function to guide the search towards the target node. The heuristic function estimates the distance from a node to the target node, and is used to prioritize the nodes in the search. A* Algorithm is often faster than Dijkstra's Algorithm, but requires a good heuristic function to be effective.
+
+### Weighted A* Algorithm
+
+Weighted A* Algorithm is a variant of A* Algorithm that allows the user to adjust the weight of the heuristic function. This can be useful in situations where the heuristic function is not accurate, or when the user wants to prioritize certain paths over others.
+
+## Implementation
+
+The program is implemented in Python, and consists of several classes and functions:
+
+- `Graph`: A class that represents a graph and provides methods for adding nodes and edges.
+- `Node`: A class that represents a node in the graph and stores its coordinates and edges.
+- `InputProcessor`: A class that reads input data from `input.txt` and `coords.txt` and generates `FormattedInput.txt`.
+- `HeuristicDictionary`: A class that calculates heuristic distances for Weighted A* Algorithm.
+- `ShortestPathFinder`: A class that implements Dijkstra's Algorithm, A* Algorithm, and Weighted A* Algorithm.
+- `Visualizer`: A class that uses `matplotlib` to create visual representations of the graph and algorithm steps.
+- `OutputGenerator`: A class that generates output data in `output.txt`.
+
+To run the program, make sure `input.txt`, `coords.txt`, `FormattedInput.txt`, and `output.txt` are available, and run the program using `python
+
+**--------------------------------------------------------------------------------------------------------------------------------------------------------------------**
+
+
+# RRT and RRT* Algorithm Implementation
+
+## Overview
+
+This repository contains the implementation of the Rapidly-exploring Random Tree (RRT) and RRT* (RRT Star) algorithms for path planning. The implementation is written in Python and uses the matplotlib library for visualization.
+
+## Visualization
+
+### RRT* Tree Example
+
+![RRT* Tree Example](/path/to/rrt_star_tree.png)
+
+### Final Path Example
+
+![Final Path Example](/path/to/final_path.png)
+
+
+## Files
+
+- **rrt_star.py**: Python script containing the implementation of the RRT and RRT* algorithms.
+- **input.txt**: Input file specifying the start and goal coordinates, as well as the vertices of obstacles.
+- **output.txt**: Output file containing goal distances and additional information.
+
+## How to Run
+
+1. Ensure you have Python installed on your machine.
+2. Run the `rrt_star.py` script:
+   ```bash
+   python rrt_star.py
+   ```
+3. The program will read input from `input.txt`, perform the RRT* algorithm, visualize the results, and save goal distances to `output.txt`.
+
+## Input File (input.txt)
+
+The input file contains the following information:
+
+- **Start Node**: Coordinates of the start node.
+- **Goal Node**: Coordinates of the goal node.
+- **Obstacle Vertices**: Vertices of polygonal obstacles.
+
+Example:
+```
+0.0 0.0
+12.0 12.0
+-5.00 5.00
+4.00 5.00
+4.00 -5.00
+-5.00 -5.00
+-5.00 -0.00
+-4.00 -0.00
+-4.00 -4.00
+3.00 -4.00
+3.00 4.00
+-4.00 4.00
+-4.00 1.00
+-5.00 1.00
+```
+
+## Output File (output.txt)
+
+The output file contains goal distances and additional information. For example:
+```
+35.012345
+70.123456
+Optimum Distance: 27.5
+```
+
+## Visualization
+
+The program generates visualizations of the RRT* tree, final path, and obstacles using matplotlib.
+
+## Dependencies
+
+- Python 3.x
+- matplotlib library
+- shapely library
+
+Install dependencies using:
+```bash
+pip install matplotlib shapely
+```
+
+## Results
+
+The RRT* algorithm successfully plans a path from the start node to the goal node while avoiding obstacles. The visualizations and goal distances are saved for analysis.
+
+Feel free to modify parameters in the script for experimentation and testing.
+
+For any questions or issues, please contact me at gaurav.surtani@sjsu.edu.
+
+**--------------------------------------------------------------------------------------------------------------------------------------------------------------------**
