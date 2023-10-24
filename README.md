@@ -97,7 +97,7 @@ Weighted A* Algorithm is a variant of A* Algorithm that allows the user to adjus
 
 ## Visualization
 
-### RRT* Tree Example
+###  Dijkstra's Algorithm / A* Algorithm / Weighted A* Algorithm Example
 
 ![ Dijkstra's Algorithm / A* Algorithm / Weighted A* Algorithm ](/Assignments/Assignment%202/dijkstras-Astar-weightedAstar.gif)
 
