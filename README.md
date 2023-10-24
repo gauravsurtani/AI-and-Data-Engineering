@@ -1,6 +1,7 @@
 # AI-and-Data-Engineering
 
-###c Documentation
+## Algorithm Documentation
+### Dijkstra's Algorithm / A* Algorithm / Weighted A* Algorithm
 ---
 ### How to Run
 
