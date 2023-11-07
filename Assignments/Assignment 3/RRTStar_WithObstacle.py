@@ -16,6 +16,7 @@ class RRTNode:
         self.y = y
         self.parent = None
         self.cost = 0.0
+        self.children = []
 
 # Calculate the Euclidean distance between two nodes
 def distance(node1, node2):
@@ -36,11 +37,12 @@ def find_nearest(nodes, target_node):
 
     for node in nodes:
         current_distance = distance(node, target_node)
-        if current_distance < min_distance:
+        if current_distance < min_distance or (current_distance == min_distance and node.cost < min_node.cost):
             min_distance = current_distance
             min_node = node
 
     return min_node
+
 
 # Steer towards the target node with a maximum distance
 def steer(node1, node2, max_distance):
@@ -63,30 +65,6 @@ def is_path_clear(node1, node2, obstacle_vertices):
     else:
         return True
 
-# To fix for RRT* Algorithm
-def extend_tree_RRT(tree, target_node, max_distance, obstacle_vertices, rewire_radius):
-    nearest_node = find_nearest(tree, target_node)
-    new_node = steer(nearest_node, target_node, max_distance)
-    # print(nearest_node)
-    # print(new_node)
-    if is_path_clear(nearest_node, new_node, obstacle_vertices):
-        new_node.parent = nearest_node
-        new_node.cost = nearest_node.cost + distance(nearest_node, new_node)
-
-        # Rewire the tree
-        near_nodes = [node for node in tree if distance(new_node, node) < rewire_radius]
-        for near_node in near_nodes:
-            if new_node.cost + distance(new_node, near_node) < near_node.cost:
-                near_node.parent = new_node
-                near_node.cost = new_node.cost + distance(new_node, near_node)
-
-        tree.append(new_node)
-        
-        if distance(new_node, target_node) < max_distance:
-            goal_distance.append(new_node.cost + distance(new_node, target_node))
-            if target_node == goal_node:
-                pass       
-                ## everytime distance to target node changes we add a goal distance
 
 def extend_tree(tree, target_node, max_distance, obstacle_vertices, rewire_radius, goal_distance, goal_radius, paths):
     nearest_node = find_nearest(tree, target_node)
@@ -97,31 +75,51 @@ def extend_tree(tree, target_node, max_distance, obstacle_vertices, rewire_radiu
         new_node.cost = nearest_node.cost + distance(nearest_node, new_node)
 
         # Rewire the tree
-        near_nodes = [node for node in tree if distance(new_node, node) < rewire_radius]
+        near_nodes = find_near_nodes(tree, new_node, rewire_radius)
         for near_node in near_nodes:
-            if new_node.cost + distance(new_node, near_node) < near_node.cost:
+            potential_cost = new_node.cost + distance(new_node, near_node)
+            if potential_cost < near_node.cost and is_path_clear(near_node, new_node,obstacle_vertices):
                 near_node.parent = new_node
-                near_node.cost = new_node.cost + distance(new_node, near_node)
+                near_node.cost = potential_cost
+                rewire(tree, near_node, rewire_radius)
 
         tree.append(new_node)
 
         # Check if the new node is close to the goal
         if is_inside_circle((new_node.x, new_node.y), (goal_node.x, goal_node.y), goal_radius):
             current_distance = new_node.cost + distance(new_node, target_node)
-            # Add the distance to the goal only if it changes
             if not goal_distance or current_distance != goal_distance[-1]:
                 goal_distance.append(current_distance)
-                # Store the path for visualization
-                current_path = []
-                current_path_node = new_node
-                while current_path_node:
-                    current_path.append((current_path_node.x, current_path_node.y))
-                    current_path_node = current_path_node.parent
+                current_path = get_path(new_node)
                 paths.append(current_path)
                 visualize_rrt_final(tree, paths[-1], obstacle_vertices, paths)
 
-        # Visualize the current state of the RRT
-        # visualize_rrt(tree, obstacle_vertices, target_node)
+         # Visualize the current state of the RRT
+        visualize_rrt(tree, obstacle_vertices, target_node)
+        
+def find_near_nodes(tree, new_node, rewire_radius):
+    near_nodes = []
+    for node in tree:
+        if distance(node, new_node) < rewire_radius:
+            near_nodes.append(node)
+    return near_nodes
+
+def get_path(new_node):
+    current_path = []
+    current_path_node = new_node
+    while current_path_node:
+        current_path.append((current_path_node.x, current_path_node.y))
+        current_path_node = current_path_node.parent
+    return current_path
+
+def rewire(tree, new_node, rewire_radius):
+    near_nodes = find_near_nodes(tree, new_node, rewire_radius)
+    for near_node in near_nodes:
+        potential_cost = new_node.cost + distance(new_node, near_node)
+        if potential_cost < near_node.cost and is_path_clear(near_node, new_node,obstacle_vertices):
+            near_node.parent = new_node
+            near_node.cost = potential_cost
+            rewire(tree, near_node, rewire_radius)
 
 # Run the RRT* algorithm
 def rrt_star(start, goal, iterations, max_distance, obstacle_vertices, rewire_radius, goal_radius, goal_distance):
@@ -131,9 +129,12 @@ def rrt_star(start, goal, iterations, max_distance, obstacle_vertices, rewire_ra
         random_node = RRTNode(random.uniform(-10, 15), random.uniform(-10, 15))
         extend_tree(tree, random_node, max_distance, obstacle_vertices, rewire_radius, goal_distance, goal_radius, paths)
 
+
     # Continue extending the tree towards the goal even after initial connection
-    while not any(node.x == goal.x and node.y == goal.y for node in tree):
-        extend_tree(tree, goal, max_distance, obstacle_vertices, rewire_radius, goal_distance, goal_radius, paths)
+    # while distance(tree[-1], goal) > 0.5:  # Adjust the threshold as needed
+    #     extend_tree(tree, goal, max_dist, obstacle_vertices, rewire_radius, goal_distance, goal_radius, paths)
+    #     print(f"Distance to goal: {distance(tree[-1], goal)}")
+
 
     # Generate the final path
     final_path = []
@@ -146,7 +147,7 @@ def rrt_star(start, goal, iterations, max_distance, obstacle_vertices, rewire_ra
 
 # Visualize the RRT* tree and final path
 # Updated visualize_rrt_final function
-def visualize_rrt_final(tree, final_path, obstacle_vertices, paths, target_radius=0.5):
+def visualize_rrt_final(tree, final_path, obstacle_vertices, paths, target_radius=0.75):
     plt.clf()
     plt.figure(figsize=(10, 10))
     
@@ -205,13 +206,15 @@ def visualize_rrt(tree, obstacle_vertices, target_node):
             plt.plot([node.x, node.parent.x], [node.y, node.parent.y], color='blue')
 
     # Plot target node
-    # plt.scatter(goal_node.x, goal_node.y, color='blue', marker='x', label='Random Node')
+    plt.scatter(target_node.x, target_node.y, color='blue', marker='x', label='Random Node')
     
     # Plot start node
     plt.scatter(start_node.x, start_node.y, color='green', marker='x', label='Start Node')
     
     # Plot target node
     plt.scatter(goal_node.x, goal_node.y, color='red', marker='x', label='Goal Node')
+    target_circle = Circle((goal_node.x, goal_node.y), 0.75, fill=False, color='red',linewidth=2)
+    plt.gca().add_patch(target_circle)
 
     # Set axis limits
     plt.xlim(-12, 15)
@@ -230,7 +233,7 @@ if __name__ == "__main__":
     
     #Get the Start , Goal and Obstacle from input file
     goal_distance = []
-    goal_radius = 0.5
+    goal_radius = 0.75
     paths = []  # Store paths for visualization
 
     input_file_name = "input.txt"
@@ -254,11 +257,11 @@ if __name__ == "__main__":
 
     # Algorithm parameters
     
-    max_dist = 1
+    max_dist = 2
     print(f'{max_dist}: length of node we are using')
     rewire_radius = 0.75
     print(f'{rewire_radius}: Radius used to find nearest node')
-    iterations = 4000
+    iterations = 1000
     print(f'{iterations}: Max Iterations')
 
     # Obstacle definition
@@ -287,10 +290,10 @@ if __name__ == "__main__":
 
     
     output_file_name = "output.txt"
-    with open(output_file_name, 'w') as output_file:
-        output_file.write(f"{goal_distance[-1]}\n") 
-        output_file.write(f"{goal_distance[0]}\n")
-        output_file.write(f"{total_distance}\n")
+    # with open(output_file_name, 'w') as output_file:
+    #     output_file.write(f"{goal_distance[-1]}\n") 
+    #     output_file.write(f"{goal_distance[0]}\n")
+    #     output_file.write(f"{total_distance}\n")
 
     print(f'Goal Distances: {goal_distance}')
     print(f'Goal distances are saved to {output_file_name}')
