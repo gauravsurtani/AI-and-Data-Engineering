@@ -95,7 +95,7 @@ Weighted A* Algorithm is a variant of A* Algorithm that allows the user to adjus
 
 ###  Dijkstra's Algorithm / A* Algorithm / Weighted A* Algorithm Example
 
-![ Dijkstra's Algorithm / A* Algorithm / Weighted A* Algorithm ](/Assignment%202/dijkstras-Astar-weightedAstar.gif)
+![ Dijkstra's Algorithm / A* Algorithm / Weighted A* Algorithm ](/%23Course%20Work/Assignment%202/dijkstras-Astar-weightedAstar.gif)
 
 ### Final Path Example
 
@@ -128,11 +128,11 @@ This repository contains the implementation of the Rapidly-exploring Random Tree
 
 ### RRT* Tree Example
 
-![RRT* Tree Example](/Assignment%203/rrt_animation.gif)
+![RRT* Tree Example](/%23Course%20Work/Assignment%203/rrt_animation.gif)
 
 ### Final Path Example
 
-![Final Path Example](/Assignment%203/submissions/Figure%202023-10-23%20193614%20(892).png)
+![Final Path Example](/%23Course%20Work/Assignment%203/submissions/Figure%202023-10-23%20193614%20(892).png)
 
 
 ## Files
