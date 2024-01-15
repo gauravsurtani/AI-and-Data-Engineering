@@ -1,0 +1,66 @@
+---
+title: "Project Proposal : Sensor Synergy of Lidar and Vision-Based Detection for
+  Obstacle Mapping in Simulated Environments"
+author: "Gaurav Surtani"
+date: "2023-11-05"
+output: word_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Abstract
+In the evolving field of autonomous vehicle development, there's a common reliance on single-sensor systems for navigational decision-making. This project proposes augmenting Lidar with an additional sensor to enhance safety and decision-making through sensor fusion. The study will investigate the sequential integration of Lidar with an auxiliary sensor to evaluate effectiveness in improving obstacle detection. By examining different sensor fusion methodologies, the project aims to determine if a multi-sensor approach can quicken and refine the environmental scanning process. This simulation-based study intends to narrow the gap between theoretical sensor fusion models and practical, scalable real-world autonomous driving applications.
+
+**Keywords**: Autonomous Vehicles, Sensor Fusion, Lidar, Obstacle Detection, Multi-Sensor Integration, Decision-Making, Simulation-Based Study.
+
+## 1. Introduction
+- **Background**: From my previous readings, it's apparent that most self-driving cars primarily use Lidar for object detection and decision-making. However, over time, errors tend to accumulate with this sensor.
+   
+- **Problem Statement**: The problem lies in the accuracy of using a single sensor. This project proposes the use of an additional sensor and the application of different sensor fusion algorithms to achieve a more accurate and informed decision-making process.
+   
+- **Objectives**: First, I aim to measure the accuracy of using only Lidar in obstacle mapping over a specific time period. Second, I plan to incorporate another sensor/s to improve decision-making. Third, I will create a 2D simulation in Python to demonstrate Lidar's object detection capabilities and how another sensor can potentially increase the accuracy and speed of the detection process.
+
+## 2. Literature Review
+- I have reviewed the following seven research papers to understand various sensor fusion techniques:
+  1. "Sensor Fusion Module Using IMU and GPS Sensors For Autonomous Car," in Proceedings of the 2020 IEEE International Conference for Innovation in Technology (INOCON), Bengaluru, India, Nov 6-8, 2020.
+  2. J. Zhang and S. Singh, "LOAM: Lidar Odometry and Mapping in Real-time," in Proceedings of Robotics: Science and Systems, Berkeley, USA, Jul. 2014.
+  3. D. Yeong, G. Velasco‐Hernandez, J. Barry, and J. Walsh, "Sensor and Sensor Fusion Technology in Autonomous Vehicles: A Review," Sensors, vol. 21, no. 7, Article 2153, Mar. 2021 
+  4. J. Fayyad, M. A. Jaradat, D. Gruyer, and H. Najjaran, "Deep Learning Sensor Fusion for Autonomous Vehicle Perception and Localization: A Review,"
+  5. Y. Zou, F. Liu, J. Qu, H. Jing, B. Kuang, G. Wang, and H. Li, "Overview of Multi-sensor Fusion in Autonomous Vehicles," presented at MEMAT 2022, Guilin, China, January 07-09, 2022.
+  6. L. Qingqing, J. Pena Queralta, T. Nguyen Gia, Z. Zou, and T. Westerlund, "Multi Sensor Fusion for Navigation and Mapping in Autonomous Vehicles: Accurate Localization in Urban Environments," in Proceedings of the IEEE 4th World Forum on Internet of Things (WF-IoT), Singapore, Feb. 2018, pp. 1-6.
+  7. K. Huang, X. Li, B. Shi, S. Huang, X. Li, and Y. Li, "Multi-modal Sensor Fusion for Auto Driving Perception: A Survey," 
+   
+
+## 3. Methodology
+- **Sensor Selection**: I have opted for Lidar, as it currently stands out in terms of accuracy. It will be paired with other sensors such as Radar, Camera, Ultrasonic, Infrared, and IMU, each providing unique contributions to the fusion process.
+
+- **Simulation Environment**: The simulation will employ Python libraries like matplotlib and numpy for Radar and Lidar visualization, and OpenCV for camera-based object detection. Ultrasonic and Infrared sensor simulations, as well as IMU data processing, will also be conducted using appropriate mathematical models and data processing libraries.
+
+- **Data Fusion Approach**: Throughout my project, I will explore various sensor fusion techniques, as mentioned in paper [6], including early-fusion, deep-fusion, and late-fusion.
+
+## 4. Implementation Plan
+- **Timeline**:   
+
+  Days 1-4: Project Setup and Sensor Selection.    
+  Days 5-10: Simulation Environment Construction.   
+  Days 11-19: Sensor Data Fusion Development.   
+  Days 20-25: Testing and Refinement.   
+  Days 25-29: Analysis and Documentation.   
+  
+- **Risk Management**: 
+  - Risk 1: Incompatibility between Lidar and the secondary sensor.
+    Mitigation: Early integration testing with robust Python library support.
+  - Risk 2: Limited time for thorough testing.
+    Mitigation: Focus on developing a minimum viable fusion algorithm with incremental testing.
+  - Risk 3: Software or simulation tool issues.
+    Mitigation: Use reliable tools and allocate time for troubleshooting.
+
+## 6. Expected Results
+- I expect to see a marginal increase in the accuracy of object detection and an improvement in the decision-making process of autonomous vehicles. Additionally, I aim to evaluate the speed of object detection and the comprehensive coverage of the detection process.
+
+## 7. Conclusion
+- I propose to utilize sensor fusion data to increase the accuracy of the currently used Lidar sensor for better object and threat detection. I will explore various types of sensor fusion algorithms to find the most effective results.
+
+- Gap Identification: This will at least help me comprehend the current trends in the world of autonomous vehicles.
