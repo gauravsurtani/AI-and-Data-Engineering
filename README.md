@@ -19,8 +19,15 @@ This is the video we have from the KITTI dataset.
 
 ## Structure
 
-### #Course Work
-This directory contains all the coursework related material for the Camera Lidar Sensor Fusion Project.
+### Course Work
+This directory contains all the coursework related material for various Path Planning Programs:
+- Dijkstra's
+- A* algorithm
+- Weighted A* algorithm
+- RRT algorithm
+- RRT* algorithm
+- To-do: Informed Search Algorithm
+- To-do: Smart Agent Research
 
 ### Background Research/Project Proposal
 In this directory, you can find all the initial research and project proposals that were used to define the scope and objectives of the Camera Lidar Sensor Fusion Project.
