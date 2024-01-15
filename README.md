@@ -7,9 +7,15 @@ This repository contains the work and research associated with the Camera Lidar 
 This is the video we have from the KITTI dataset.
 [Input to the sensor fusion code](/LiDAR_Camera_SensorFusion_Research/input.gif)
 
+![Input to the sensor fusion code](/LiDAR_Camera_SensorFusion_Research/input.gif)
+
+
 ## Output
 
 [Output of sensor fusion](/LiDAR_Camera_SensorFusion_Research/final_output.gif)
+
+![Output of sensor fusion](/LiDAR_Camera_SensorFusion_Research/final_output.gif)
+
 
 ## Structure
 
