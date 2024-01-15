@@ -99,7 +99,7 @@ Weighted A* Algorithm is a variant of A* Algorithm that allows the user to adjus
 
 ### Final Path Example
 
-![Final Path Example](/#Course%20Work//Assignment%202/End.png)
+![Final Path Example](/%23Course%20Work/Assignment%202/End.png)
 
 ## Implementation
 
