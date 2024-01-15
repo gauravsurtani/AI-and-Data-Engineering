@@ -9,11 +9,6 @@ Ensure you have Python installed on your system.
 Check for the input.txt and coords.txt file which contain your nodes and its distances.
 Open a terminal or command prompt and type the below
 ---
-
-```
-python .\Final_file.py
-```
-
 ## Introduction
 
 This document provides an overview and documentation for the Python code implementing Dijkstra's algorithm for finding the shortest path between nodes in a weighted graph. The code is organized around a `Graph` class that encapsulates the necessary data structures and methods for performing Dijkstra's algorithm.
@@ -100,11 +95,11 @@ Weighted A* Algorithm is a variant of A* Algorithm that allows the user to adjus
 
 ###  Dijkstra's Algorithm / A* Algorithm / Weighted A* Algorithm Example
 
-![ Dijkstra's Algorithm / A* Algorithm / Weighted A* Algorithm ](/Assignments/Assignment%202/dijkstras-Astar-weightedAstar.gif)
+![ Dijkstra's Algorithm / A* Algorithm / Weighted A* Algorithm ](/Assignment%202/dijkstras-Astar-weightedAstar.gif)
 
 ### Final Path Example
 
-![Final Path Example](/Assignments/Assignment%202/End.png)
+![Final Path Example](/Assignment%202/End.png)
 
 ## Implementation
 
@@ -133,11 +128,11 @@ This repository contains the implementation of the Rapidly-exploring Random Tree
 
 ### RRT* Tree Example
 
-![RRT* Tree Example](/Assignments/Assignment%203/rrt_animation.gif)
+![RRT* Tree Example](/Assignment%203/rrt_animation.gif)
 
 ### Final Path Example
 
-![Final Path Example](Assignments/Assignment%203/submissions/Figure%202023-10-23%20193614%20(892).png)
+![Final Path Example](/Assignment%203/submissions/Figure%202023-10-23%20193614%20(892).png)
 
 
 ## Files
@@ -163,32 +158,6 @@ The input file contains the following information:
 - **Goal Node**: Coordinates of the goal node.
 - **Obstacle Vertices**: Vertices of polygonal obstacles.
 
-Example:
-```
-0.0 0.0
-12.0 12.0
--5.00 5.00
-4.00 5.00
-4.00 -5.00
--5.00 -5.00
--5.00 -0.00
--4.00 -0.00
--4.00 -4.00
-3.00 -4.00
-3.00 4.00
--4.00 4.00
--4.00 1.00
--5.00 1.00
-```
-
-## Output File (output.txt)
-
-The output file contains goal distances and additional information. For example:
-```
-35.012345
-70.123456
-Optimum Distance: 27.5
-```
 
 ## Visualization
 
@@ -213,4 +182,4 @@ Feel free to modify parameters in the script for experimentation and testing.
 
 For any questions or issues, please contact me at gaurav.surtani@sjsu.edu.
 
-**--------------------------------------------------------------------------------------------------------------------------------------------------------------------**
+---
